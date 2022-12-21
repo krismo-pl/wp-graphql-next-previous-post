@@ -75,8 +75,20 @@ class Loader
 
                 // setup global $post variable
                 setup_postdata($post);
-
-                $prev = get_previous_post();
+                
+                //get all the tems of language taxonomy 
+                $terms = get_terms( 'language', array(
+                    'hide_empty' => false,
+                ) );
+                $excludeds_term_ids = array();
+                foreach($terms as $term){
+                    if($term->slug !='en'){   // exlude all of them other than 'en'
+                        $excludeds_term_ids[]= $term->term_id; 
+                    }
+                }
+                
+                //$prev = get_previous_post();
+                $prev = get_adjacent_post(true,$excludeds_term_ids,false,'language');
 
                 wp_reset_postdata();
 
