@@ -12,7 +12,7 @@ use WPGraphQL\Model\Post;
  * This class allows you to see the next and previous posts in the 'post' type.
  *
  * @package WNextPreviousPost
- * @since   0.1.0
+ * @since   0.1.2
  */
 class Loader
 {
