@@ -49,20 +49,24 @@ class Loader
                 // setup global $post variable
                 setup_postdata($post);
 
+                // get post lang
+                $lang = wp_get_post_terms($post->ID, 'language', $args);
+
                 //get all the tems of language taxonomy 
                 $terms = get_terms( 'language', array(
                     'hide_empty' => false,
                 ) );
                 $excludeds_term_ids = array();
-                foreach($terms as $term){
-                    if($term->slug !='en'){   // exlude all of them other than 'en'
-                        $excludeds_term_ids[]= $term->term_id; 
+                foreach($terms as $term){       
+                    if(!empty($lang)){
+                        if($term->slug != $lang[0]->slug ){   // exlude all of them other than post language
+                            $excludeds_term_ids[]= $term->term_id;
+                        }
                     }
                 }
                 
                 //$next = get_next_post();
                 $next = get_adjacent_post(true,$excludeds_term_ids,false,'language');
-                
 
                 wp_reset_postdata();
 
@@ -88,6 +92,10 @@ class Loader
 
                 // setup global $post variable
                 setup_postdata($post);
+
+                // get post lang
+                $lang = wp_get_post_terms($post->ID, 'language', $args);
+                
                 
                 //get all the tems of language taxonomy 
                 $terms = get_terms( 'language', array(
@@ -95,13 +103,15 @@ class Loader
                 ) );
                 $excludeds_term_ids = array();
                 foreach($terms as $term){
-                    if($term->slug !='en'){   // exlude all of them other than 'en'
-                        $excludeds_term_ids[]= $term->term_id; 
-                    }
+                    if(!empty($lang)){
+                        if($term->slug != $lang[0]->slug ){   // exlude all of them other than post language
+                            $excludeds_term_ids[]= $term->term_id;    
+                        }
+                    }   
                 }
                 
-                //$prev = get_previous_post();
-                $prev = get_adjacent_post(true,$excludeds_term_ids,false,'language');
+                //$prev = get_previous_post(truetruetrue);
+                $prev = get_adjacent_post(true,$excludeds_term_ids,true,'language');
 
                 wp_reset_postdata();
 
